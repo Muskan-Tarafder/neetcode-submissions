@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int solve(vector<int>& nums){
+        int n=nums.size();
+        vector<vector<int>> dp(n+1, vector<int>(n + 1, 0));
+        for(int i = n - 1; i >= 0; i--) {
+            for(int prev = i - 1; prev >= -1; prev--) {
+
+                int excl = dp[i + 1][prev + 1];
+
+                int incl = 0;
+                if(prev == -1 || nums[prev] < nums[i]) {
+                    incl = 1 + dp[i + 1][i + 1];
+                }
+
+                dp[i][prev + 1] = max(incl, excl);
+            }
+        }
+
+        return dp[0][0];
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        int prev=-1;
+        int n=nums.size();
+        vector<vector<int>> dp(n, vector<int>(n + 1, -1));
+        return solve(nums);
+    }
+};
